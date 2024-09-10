@@ -43,47 +43,36 @@ Before you begin, ensure you have met the following requirements:
 
 ## Installation
 
-### Clone the Repository
-
-```bash
+# Clone the repository
 git clone https://github.com/siddharth-2002/Luganodes-task.git
 cd Luganodes-task
 
-Install Dependencies
-Use npm or yarn to install the required dependencies:
-
-bash
-Copy code
+# Install Dependencies
+# Use npm or yarn to install the required dependencies
 npm install
 # or
 yarn install
-Running the Application
-Start the Ethereum Deposit Tracker
-bash
-Copy code
+
+# Running the Application
+# Start the Ethereum Deposit Tracker
 npm start
 # or
 yarn start
-The tracker will establish an RPC connection to your Ethereum node provider and start monitoring deposits on the Beacon Deposit Contract.
 
-Docker Deployment
-If you prefer to run the application using Docker:
+# The tracker will establish an RPC connection to your Ethereum node provider and start monitoring deposits on the Beacon Deposit Contract.
 
-Create a Docker Network
-bash
-Copy code
+# Docker Deployment
+# If you prefer to run the application using Docker:
+
+# Create a Docker Network
 docker network create grafana-net
-Run the Monitoring Stack
-Navigate to the monitoring-stack folder and start the stack:
 
-bash
-Copy code
+# Run the Monitoring Stack
+# Navigate to the monitoring-stack folder and start the stack
 cd monitoring-stack
 docker compose up -d
-Run the Tracker App
-Enter the tracker-stack folder and start the application:
 
-bash
-Copy code
+# Run the Tracker App
+# Enter the tracker-stack folder and start the application
 cd ../tracker-stack
 ALCHEMY_API_KEY=<YOUR_ALCHEMY_API_KEY> docker compose up -d
