@@ -7,5 +7,9 @@ For more detailed documentation, refer to the following link:
 [Click Here](https://github.com/siddharth-2002/Luganodes-task/blob/main/richtext_converted_to_markdown.md)
 
 
+Preview of Telegram Bot
+https://github.com/siddharth-2002/Luganodes-task/blob/main/Telegram%20bOT.PNG
+
+
 
 
