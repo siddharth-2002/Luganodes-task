@@ -4,7 +4,7 @@ ETH Deposit Tracker - Documentation
 Objective
 ---------
 
-The objective of this project is to create an ETH deposit tracker that monitors deposits made to the Ethereum 2.0 deposit contract, extracts relevant data, and saves it into a defined schema. The application will also include error handling, logging mechanisms, and an optional alerting system using Grafana and Telegram notifications.
+The objective of this project is to create an ETH deposit tracker that monitors deposits made to the Ethereum 2.0 deposit contract, extracts relevant data, and saves it into a defined schema. The application will also include error handling, logging mechanisms, and an optional alerting system using Grafana, Prometheus, and Telegram notifications.
 
 Purpose
 -------
@@ -13,7 +13,7 @@ This application is designed to:
 
 -   Track ETH deposits by monitoring Ethereum 2.0 deposit events.
 -   Save deposit details into a specified schema.
--   Provide an alerting mechanism to notify users in case of issues or significant deposits via Telegram and Grafana dashboards.
+-   Provide an alerting mechanism to notify users in case of issues or significant deposits via Telegram, Grafana dashboards, and Prometheus alerts.
 
 Tech Stack to be Used
 ---------------------
@@ -23,6 +23,7 @@ Tech Stack to be Used
 -   **Ethereum Node Provider** (e.g., Alchemy, Infura)
 -   **Docker** (optional, for containerization)
 -   **Grafana** (for monitoring and visualization)
+-   **Prometheus** (for metrics collection and alerting)
 -   **Telegram Bot** (for notifications)
 -   **Ethereum Wallet** (e.g., MetaMask, for testing)
 
@@ -39,6 +40,8 @@ Ensure you have the following installed on your machine:
 -   **npm** or **yarn**
 -   **Docker** (optional, if containerizing the application)
 -   **MetaMask** (for Ethereum wallet testing)
+-   **Prometheus** (for metrics collection)
+-   **Grafana** (for visualization)
 
 ### Step 1: Clone the Repository
 
@@ -72,6 +75,7 @@ Copy code
 `ETHEREUM_NODE_URL=<Your_Ethereum_Node_URL>   # Get from Alchemy or Infura
 TRACKING_CONTRACT_ADDRESS=<Ethereum_2.0_Contract_Address>   # The contract address of Ethereum 2.0 deposit contract
 GRAFANA_URL=<Your_Grafana_Instance_URL>
+PROMETHEUS_URL=<Your_Prometheus_Instance_URL>
 TELEGRAM_BOT_TOKEN=<Your_Telegram_Bot_Token> # From BotFather on Telegram
 TELEGRAM_CHAT_ID=<Your_Chat_ID> # The chat ID to send notifications`
 
@@ -119,6 +123,25 @@ To run with Docker:
 2.  Create a dashboard for monitoring ETH deposits.
 3.  Configure Grafana alerts and integrate them with your Telegram bot via the **Alert Notification** section in Grafana.
 
+### Step 7: Setting up Prometheus for Metrics Collection
+
+1.  Install and set up a Prometheus instance using the official Prometheus documentation.
+
+2.  Configure Prometheus to scrape metrics from your ETH deposit tracker application by adding it to the `prometheus.yml` configuration file:
+
+    yaml
+
+    Copy code
+
+    `scrape_configs:
+      - job_name: 'eth-deposit-tracker'
+        static_configs:
+          - targets: ['localhost:3000']  # Replace with your application's address`
+
+3.  Define custom metrics in your application for Prometheus to scrape. Add metrics to `tracker.js` and expose them using an HTTP endpoint.
+
+4.  Set up alerts in Prometheus based on your custom metrics and configure alerting rules to notify via Grafana or other channels.
+
 * * * * *
 
 Code Structure
@@ -128,6 +151,7 @@ Code Structure
 -   **`utils.js`**: Utility functions like error handling, formatting, etc.
 -   **`tracker.js`**: Core logic for monitoring the Ethereum 2.0 deposit contract.
 -   **`alerts.js`**: Logic for sending Telegram and Grafana alerts.
+-   **`metrics.js`**: Custom Prometheus metrics and exposure.
 -   **`models/Deposit.js`**: Schema for saving deposit data (block number, timestamp, fee, hash, and public key).
 
 * * * * *
@@ -155,7 +179,8 @@ Usage Instructions
 3.  **Alerts and Notifications**:
 
     -   Telegram alerts are triggered based on predefined conditions like large deposits or errors.
-    -   Grafana dashboard provides real-time monitoring of the application status and tracked deposits.
+    -   Grafana dashboards provide real-time monitoring of the application status and tracked deposits.
+    -   Prometheus metrics allow for detailed monitoring and alerting based on application performance.
 
 * * * * *
 
@@ -166,10 +191,3 @@ Future Work
 -   **Improved Alerting**: Add more advanced alerts, such as Slack or email notifications.
 -   **Automated Scaling**: Implement auto-scaling features using cloud services like AWS or Google Cloud.
 -   **Performance Optimization**: Improve deposit tracking speed for higher throughput.
-
-* * * * *
-
-Conclusion
-----------
-
-The ETH Deposit Tracker provides a reliable and extensible solution to track Ethereum 2.0 deposits. It includes real-time monitoring via Grafana and notifications through Telegram, ensuring that users stay informed about significant events. The application is designed to be scalable, with future enhancements focusing on extended network support, better alerting mechanisms, and performance improvements.
