@@ -166,14 +166,6 @@ TELEGRAM_CHAT_ID=your_telegram_chat_id
 
 ---
 
-## Examples
-
-### Web Interface
-
-When you run the application, the web page will show the following:
-
-- **Fixed Transactions**: The top two transactions specified in the document.
-- **Real-Time Transactions**: The latest 18 real-time Ethereum deposit transactions, updating dynamically.
 
 ### Telegram Notifications
 
