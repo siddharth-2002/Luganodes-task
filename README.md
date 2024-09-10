@@ -137,12 +137,6 @@ TELEGRAM_CHAT_ID=your_telegram_chat_id
 
 - The two fixed transactions are always displayed at the top, as per the example given in the task document.
 
-### Web Page Design
-
-- The page has a **deep blue background** with an **animated gradient flow** for aesthetics.
-- There is a **notification bell icon** (🔔) that, when clicked, displays the last 10 block numbers received.
-![image](https://github.com/user-attachments/assets/fa1f9dcd-ea96-46d0-b8d4-2f815bd6b82a)
-
 ---
 
 ## Telegram Notification Setup
