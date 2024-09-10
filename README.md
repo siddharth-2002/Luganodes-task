@@ -1,179 +1,109 @@
-# Ethereum Deposit Tracker
+ETH Deposit Tracker - Documentation
+Objective
+The objective of this project is to create an ETH deposit tracker that monitors deposits made to the Ethereum 2.0 deposit contract, extracts relevant data, and saves it into a defined schema. The application will also include error handling, logging mechanisms, and an optional alerting system using Grafana and Telegram notifications.
 
-### A real-time Ethereum deposit tracker that monitors transactions on the Beacon Deposit Contract and displays the latest deposits on the frontend. The application also includes Telegram notifications for real-time deposit alerts.
+Purpose
+This application is designed to:
 
----
+Track ETH deposits by monitoring Ethereum 2.0 deposit events.
+Save deposit details into a specified schema.
+Provide an alerting mechanism to notify users in case of issues or significant deposits via Telegram and Grafana dashboards.
+Tech Stack to be Used
+Node.js (version 14 or above)
+npm or yarn (for package management)
+Ethereum Node Provider (e.g., Alchemy, Infura)
+Docker (optional, for containerization)
+Grafana (for monitoring and visualization)
+Telegram Bot (for notifications)
+Ethereum Wallet (e.g., MetaMask, for testing)
+Installation and Setup
+Prerequisites
+Ensure you have the following installed on your machine:
 
-## Table of Contents
+Node.js (version 14 or above)
+npm or yarn
+Docker (optional, if containerizing the application)
+MetaMask (for Ethereum wallet testing)
+Step 1: Clone the Repository
+bash
+Copy code
+git clone https://github.com/your-repo/eth-deposit-tracker.git
+cd eth-deposit-tracker
+Step 2: Install Dependencies
+Use npm or yarn to install the required packages:
 
-1. [Overview](#overview)
-2. [Features](#features)
-3. [Technologies](#technologies)
-4. [Setup Instructions](#setup-instructions)
-   - [Prerequisites](#prerequisites)
-   - [Installation](#installation)
-5. [Environment Variables](#environment-variables)
-6. [Running the Application](#running-the-application)
-7. [Usage](#usage)
-   - [Real-Time Deposits](#real-time-deposits)
-   - [Fixed Transactions](#fixed-transactions)
-8. [Telegram Notification Setup](#telegram-notification-setup)
-9. [Examples](#examples)
-10. [Contributing](#contributing)
-11. [License](#license)
+bash
+Copy code
+npm install
+# or
+yarn install
+Step 3: Configure Environment Variables
+Create a .env file in the root of the project. You'll need the following environment variables:
 
----
+bash
+Copy code
+ETHEREUM_NODE_URL=<Your_Ethereum_Node_URL>   # Get from Alchemy or Infura
+TRACKING_CONTRACT_ADDRESS=<Ethereum_2.0_Contract_Address>   # The contract address of Ethereum 2.0 deposit contract
+GRAFANA_URL=<Your_Grafana_Instance_URL>
+TELEGRAM_BOT_TOKEN=<Your_Telegram_Bot_Token> # From BotFather on Telegram
+TELEGRAM_CHAT_ID=<Your_Chat_ID> # The chat ID to send notifications
+Step 4: Setup Telegram Bot for Notifications
+Open Telegram and search for BotFather.
+Use /newbot to create a new bot, follow the instructions, and get the Bot Token.
+Store the Bot Token in the .env file as TELEGRAM_BOT_TOKEN.
+Use the following commands to configure your bot:
+/setprivacy to disable privacy mode, allowing your bot to see messages.
+Send a message to your bot to generate a Chat ID.
+You can get the Chat ID by visiting https://api.telegram.org/bot<Your_Bot_Token>/getUpdates.
+Step 5: Run the Application
+Once the environment variables are set, you can run the tracker:
 
-## Overview
+bash
+Copy code
+npm start
+To run with Docker:
 
-The **Ethereum Deposit Tracker** monitors the Beacon Deposit Contract for new Ethereum deposits in real-time, displays the most recent 20 transactions on the web page, and provides Telegram notifications for detected deposits.
+Build the Docker image:
+bash
+Copy code
+docker build -t eth-deposit-tracker .
+Run the Docker container:
+bash
+Copy code
+docker run -d --env-file .env eth-deposit-tracker
+Step 6: Setting up Grafana for Monitoring
+Install and set up a Grafana instance using the official Grafana documentation.
+Create a dashboard for monitoring ETH deposits.
+Configure Grafana alerts and integrate them with your Telegram bot via the Alert Notification section in Grafana.
+Code Structure
+app.js: Entry point for the application.
+utils.js: Utility functions like error handling, formatting, etc.
+tracker.js: Core logic for monitoring the Ethereum 2.0 deposit contract.
+alerts.js: Logic for sending Telegram and Grafana alerts.
+models/Deposit.js: Schema for saving deposit data (block number, timestamp, fee, hash, and public key).
+Usage Instructions
+Start Tracking: Once the app is running, it will continuously track deposits to the Ethereum 2.0 contract.
 
-This application is built using the **MERN stack** (MongoDB, Express, React, Node.js) and uses **Alchemy** for interacting with the Ethereum blockchain.
+Deposit Schema:
 
----
+javascript
+Copy code
+{
+  blockNumber: Number,
+  blockTimestamp: Date,
+  fee: Number,
+  hash: String,
+  pubkey: String
+}
+Each deposit event will save data to this schema, ensuring consistency.
+Alerts and Notifications:
 
-## Features
-
-- Monitors the **Beacon Deposit Contract** for Ethereum deposits.
-- Displays the **most recent 20 transactions** on the web page.
-- Shows **two fixed transactions** on top, followed by 18 real-time transactions.
-- Sends **real-time notifications** to a **Telegram bot** when a deposit is detected.
-- Aesthetic page design with a **deep blue background** and **animated gradient flow**.
-
----
-
-## Technologies
-
-- **Frontend**: React, CSS (for animation and styling)
-- **Backend**: Node.js, Express
-- **Database**: MongoDB (MongoDB Atlas)
-- **Blockchain Interaction**: Alchemy SDK
-- **Notifications**: Telegram Bot API
-
----
-
-## Setup Instructions
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed on your local machine:
-
-- **Node.js** (v14.x or higher)
-- **MongoDB Atlas** (or local MongoDB)
-- **NPM** (Node Package Manager)
-- **Alchemy API** account for interacting with the Ethereum blockchain
-
-### Installation
-
-1. **Clone the repository**:
-
-   ```bash
-   git clone https://github.com/yourusername/eth-deposit-tracker.git
-   cd eth-deposit-tracker
-   ```
-
-2. **Install dependencies for both the server and client**:
-
-   - Server:
-     ```bash
-     npm install
-     ```
-
-   - Client:
-     ```bash
-     cd client
-     npm install
-     cd ..
-     ```
-
----
-
-## Environment Variables
-
-You need to configure the following environment variables in a `.env` file in the root of the project.
-
-```bash
-# .env file
-MONGO_URI=your_mongodb_atlas_connection_string
-RPC_URL=https://eth-mainnet.alchemyapi.io/v2/your_alchemy_key
-PORT=5000
-TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-TELEGRAM_CHAT_ID=your_telegram_chat_id
-```
-
-- **MONGO_URI**: The connection string to your MongoDB Atlas cluster.
-- **RPC_URL**: The Alchemy API endpoint to interact with the Ethereum network.
-- **PORT**: The port on which your server will run (default: 5000).
-- **TELEGRAM_BOT_TOKEN**: The token for your Telegram bot created via BotFather.
-- **TELEGRAM_CHAT_ID**: Your chat ID or group ID where the notifications will be sent.
-
----
-
-## Running the Application
-
-1. **Run the MongoDB database** (if you're using a local MongoDB):
-
-   ```bash
-   mongod
-   ```
-
-2. **Start the development server**:
-
-   ```bash
-   npm run dev
-   ```
-
-   This command will start both the backend server (on `localhost:5000`) and the React frontend (on `localhost:3000`) concurrently.
-
----
-
-## Usage
-
-### Real-Time Deposits
-
-- The web page will display the **two fixed transactions** at the top, followed by the **last 18 real-time transactions**. New transactions will be added to the top of the list, and older ones will be removed to maintain a count of 20 transactions in total.
-
-### Fixed Transactions
-
-- The two fixed transactions are always displayed at the top, as per the example given in the task document.
-
----
-
-## Telegram Notification Setup
-
-### Steps to Configure Telegram Notifications
-
-1. **Create a Telegram Bot** using **BotFather**:
-   - Open Telegram and search for `@BotFather`.
-   - Use the `/newbot` command to create a new bot.
-   - Save the **Bot Token** provided by BotFather.
-
-2. **Get Your Telegram Chat ID**:
-   - Start a conversation with your bot, then get your Chat ID by visiting the following URL in your browser:
-     ```
-     https://api.telegram.org/bot<YourBotToken>/getUpdates
-     ```
-   - Look for `"id"` in the response JSON, which will be your **Chat ID**.
-![image](https://github.com/user-attachments/assets/ff9256bb-73bd-4ecd-999d-c86fb11452c8)
-
-3. **Add the Bot Token and Chat ID** to the `.env` file as explained in the [Environment Variables](#environment-variables) section.
-
----
-
-
-### Telegram Notifications
-
-Example notification sent via Telegram for a new Ethereum deposit:
-
-```
-🚀 New Ethereum Deposit Detected! 🚀
-
-Block Number: 123456
-Transaction Hash: 0x1391be19259f10e01336a383217cf35344dd7aa157e95030f46235448ef5e5d6
-Fee: 0.02 ETH
-Sender Address: 0xabcdef1234567890
-Block Timestamp: 2024-09-09 12:45:32
-```
-
----
-
+Telegram alerts are triggered based on predefined conditions like large deposits or errors.
+Grafana dashboard provides real-time monitoring of the application status and tracked deposits.
+Future Work
+Integration with Other Ethereum Networks: Extend support to monitor deposits on Ethereum testnets or Layer 2 solutions.
+Improved Alerting: Add more advanced alerts, such as Slack or email notifications.
+Automated Scaling: Implement auto-scaling features using cloud services like AWS or Google Cloud.
+Performance Optimization: Improve deposit tracking speed for higher throughput.
+Conclusion
+The ETH Deposit Tracker provides a reliable and extensible solution to track Ethereum 2.0 deposits. It includes real-time monitoring via Grafana and notifications through Telegram, ensuring that users stay informed about significant events. The application is designed to be scalable, with future enhancements focusing on extended network support, better alerting mechanisms, and performance improvements.
