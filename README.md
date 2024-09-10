@@ -1,88 +1,89 @@
-# ethereum-deposit-tracker
+# Luganodes Task - Ethereum Deposit Tracker
 
-A robust and efficient Ethereum Deposit Tracker to monitor and record ETH deposits on the Beacon Deposit Contract
+This project aims to monitor and record Ethereum (ETH) deposits on the Beacon Deposit Contract in real-time. The Ethereum Deposit Tracker provides an efficient solution to track deposits, capture detailed information such as the deposit amount, sender address, timestamp, and more, while offering advanced features like monitoring dashboards and alert systems.
 
-## Clone the repository
+## Scope
 
-```
-git clonehttps://github.com/siddharth-2002/Luganodes-task.git
+The Ethereum Deposit Tracker is designed to:
+
+- Monitor the Beacon Deposit Contract (`0x00000000219ab540356cBB839Cbe05303d7705Fa`) for incoming ETH deposits.
+- Handle and store multiple deposits within a single transaction, including internal transactions.
+- Provide real-time tracking and logging mechanisms to ensure robust performance.
+- Optional: Set up a Grafana dashboard and Telegram notifications for real-time alerting and monitoring.
+
+This tool is especially useful for developers working with Ethereum staking, financial auditors, blockchain analytics platforms, and anyone who needs to monitor ETH deposits in real-time.
+
+## Tech Stack
+
+- **Node.js**: Backend logic, interaction with the Ethereum network, and capturing deposit data.
+- **Express.js**: Server setup and API routes.
+- **PostgreSQL**: Persistent storage for deposit data.
+- **Docker**: Containerization for consistent deployment environments.
+- **Grafana**: Real-time monitoring and visualization of deposit data.
+- **Prometheus**: Metrics collection and alerting mechanisms.
+- **cAdvisor**: Container resource usage tracking.
+- **Telegram Bot API**: Real-time alerts via Telegram.
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- **Node.js** (version 14 or above)
+- **npm** or **yarn**
+- An Ethereum node provider (e.g., **Alchemy**, **Infura**)
+- **Docker** (for Dockerized deployment)
+- An Ethereum wallet (e.g., **MetaMask**) for testing purposes
+## Future Scope
+
+
+-Automated Report Generation: Integrate a feature to automatically generate reports for daily, weekly, or monthly deposits.
+-Advanced Analytics: Incorporate analytics capabilities for deeper insights into deposit trends and behaviors.
+-Multi-chain Support: Expand the tracker to monitor deposits on other Ethereum-compatible chains, such as Binance Smart Chain (BSC) and Polygon.
+-Enhanced Security: Implement additional security layers, such as encryption for sensitive data and access controls.
+
+## Installation
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/siddharth-2002/Luganodes-task.git
 cd Luganodes-task
-```
 
-## Create a Docker network
+Install Dependencies
+Use npm or yarn to install the required dependencies:
 
-```
+bash
+Copy code
+npm install
+# or
+yarn install
+Running the Application
+Start the Ethereum Deposit Tracker
+bash
+Copy code
+npm start
+# or
+yarn start
+The tracker will establish an RPC connection to your Ethereum node provider and start monitoring deposits on the Beacon Deposit Contract.
+
+Docker Deployment
+If you prefer to run the application using Docker:
+
+Create a Docker Network
+bash
+Copy code
 docker network create grafana-net
-```
+Run the Monitoring Stack
+Navigate to the monitoring-stack folder and start the stack:
 
-## Run the monitoring stack (for system metrics and alerts with Grafana)
-
-Enter the `monitoring-stack` folder:
-
-```
+bash
+Copy code
 cd monitoring-stack
-```
-
-Start Grafana + Prometheus + cadvisor
-
-```
 docker compose up -d
-```
+Run the Tracker App
+Enter the tracker-stack folder and start the application:
 
-## Run the tracker app
-
-Enter the `tracker-stack` folder:
-
-```
-cd tracker-stack
-```
-
-Start PostgreSQL + Tracker app
-
-```
+bash
+Copy code
+cd ../tracker-stack
 ALCHEMY_API_KEY=<YOUR_ALCHEMY_API_KEY> docker compose up -d
-```
-
-## Create dashboard for seeing deposit table
-
-Enter `localhost:3001/login`
-
-```
-Email: admin
-Password: admin
-```
-
-- Click to create a new dashboard
-- Add PostgreSQL as a data source
-
-```
-*Connection*
-Host URL: postgres:5432
-Database name: grafana
-
-*Authentication*
-Username: grafana
-Password: grafana
-```
-
-- Add visualization, select PostgreSQL as data source
-- Select table `deposits` and column `*`, run query, switch to table.
-  ![image](https://github.com/user-attachments/assets/92034b25-f3de-418b-8c42-a0f38164c70d)
-
-## Importing the cadvisor dashboard
-
-- Click to import dashboard
-- Load the ID `19792`
-- On Prometheus dropdown, click to configure a new data source, select Prometheus
-- While creating the Prometheus data source, use `http://prometheus:9090` as Prometheus server URL.
-- Finally, import the cadvisor dashboard.
-
-https://github.com/user-attachments/assets/753ed557-7232-4ad4-a842-5d4364c8ae5c
-
-## Creating Telegram alert
-
-![image](https://github.com/user-attachments/assets/cefa5921-2d3b-4230-ae70-0e568156096f)
-
-- Enter `http://localhost:3001/alerting/new/alerting`
-- Name: New deposit alert
-
