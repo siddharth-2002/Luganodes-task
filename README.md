@@ -1,71 +1,193 @@
-# Luganodes Task - Ethereum Deposit Tracker
+# Ethereum Deposit Tracker
 
-This project aims to monitor and record Ethereum (ETH) deposits on the Beacon Deposit Contract in real-time. The Ethereum Deposit Tracker provides an efficient solution to track deposits, capture detailed information such as the deposit amount, sender address, timestamp, and more, while offering advanced features like monitoring dashboards and alert systems.
+### A real-time Ethereum deposit tracker that monitors transactions on the Beacon Deposit Contract and displays the latest deposits on the frontend. The application also includes Telegram notifications for real-time deposit alerts.
 
-## Scope
+---
 
-The Ethereum Deposit Tracker is designed to:
+## Table of Contents
 
-- Monitor the Beacon Deposit Contract (`0x00000000219ab540356cBB839Cbe05303d7705Fa`) for incoming ETH deposits.
-- Handle and store multiple deposits within a single transaction, including internal transactions.
-- Provide real-time tracking and logging mechanisms to ensure robust performance.
-- Optional: Set up a Grafana dashboard and Telegram notifications for real-time alerting and monitoring.
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Technologies](#technologies)
+4. [Setup Instructions](#setup-instructions)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+5. [Environment Variables](#environment-variables)
+6. [Running the Application](#running-the-application)
+7. [Usage](#usage)
+   - [Real-Time Deposits](#real-time-deposits)
+   - [Fixed Transactions](#fixed-transactions)
+8. [Telegram Notification Setup](#telegram-notification-setup)
+9. [Examples](#examples)
+10. [Contributing](#contributing)
+11. [License](#license)
 
-This tool is especially useful for developers working with Ethereum staking, financial auditors, blockchain analytics platforms, and anyone who needs to monitor ETH deposits in real-time.
+---
 
-## Tech Stack
+## Overview
 
-- **Node.js**: Backend logic, interaction with the Ethereum network, and capturing deposit data.
-- **Express.js**: Server setup and API routes.
-- **PostgreSQL**: Persistent storage for deposit data.
-- **Docker**: Containerization for consistent deployment environments.
-- **Grafana**: Real-time monitoring and visualization of deposit data.
-- **Prometheus**: Metrics collection and alerting mechanisms.
-- **cAdvisor**: Container resource usage tracking.
-- **Telegram Bot API**: Real-time alerts via Telegram.
+The **Ethereum Deposit Tracker** monitors the Beacon Deposit Contract for new Ethereum deposits in real-time, displays the most recent 20 transactions on the web page, and provides Telegram notifications for detected deposits.
 
-## Prerequisites
+This application is built using the **MERN stack** (MongoDB, Express, React, Node.js) and uses **Alchemy** for interacting with the Ethereum blockchain.
 
-Before you begin, ensure you have met the following requirements:
+---
 
-- **Node.js** (version 14 or above)
-- **npm** or **yarn**
-- An Ethereum node provider (e.g., **Alchemy**, **Infura**)
-- **Docker** (for Dockerized deployment)
-- An Ethereum wallet (e.g., **MetaMask**) for testing purposes
-## Future Scope
+## Features
 
+- Monitors the **Beacon Deposit Contract** for Ethereum deposits.
+- Displays the **most recent 20 transactions** on the web page.
+- Shows **two fixed transactions** on top, followed by 18 real-time transactions.
+- Sends **real-time notifications** to a **Telegram bot** when a deposit is detected.
+- Aesthetic page design with a **deep blue background** and **animated gradient flow**.
 
--Automated Report Generation: Integrate a feature to automatically generate reports for daily, weekly, or monthly deposits.
--Advanced Analytics: Incorporate analytics capabilities for deeper insights into deposit trends and behaviors.
--Multi-chain Support: Expand the tracker to monitor deposits on other Ethereum-compatible chains, such as Binance Smart Chain (BSC) and Polygon.
--Enhanced Security: Implement additional security layers, such as encryption for sensitive data and access controls.
+---
 
-## Installation
-# Clone the repository
-git clone https://github.com/siddharth-2002/Luganodes-task.git
-cd Luganodes-task
+## Technologies
 
-# Install Dependencies
-npm install
-# or
-yarn install
+- **Frontend**: React, CSS (for animation and styling)
+- **Backend**: Node.js, Express
+- **Database**: MongoDB (MongoDB Atlas)
+- **Blockchain Interaction**: Alchemy SDK
+- **Notifications**: Telegram Bot API
 
-# Running the Application
-npm start
-# or
-yarn start
+---
 
-## Docker Deployment
-# Create a Docker Network
-docker network create grafana-net
+## Setup Instructions
 
-## Run the Monitoring Stack
-cd monitoring-stack
-docker compose up -d
+### Prerequisites
 
-## Run the Tracker App
-cd ../tracker-stack
-ALCHEMY_API_KEY=<YOUR_ALCHEMY_API_KEY> docker compose up -d
+Before you begin, ensure you have the following installed on your local machine:
 
+- **Node.js** (v14.x or higher)
+- **MongoDB Atlas** (or local MongoDB)
+- **NPM** (Node Package Manager)
+- **Alchemy API** account for interacting with the Ethereum blockchain
+
+### Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/yourusername/eth-deposit-tracker.git
+   cd eth-deposit-tracker
+   ```
+
+2. **Install dependencies for both the server and client**:
+
+   - Server:
+     ```bash
+     npm install
+     ```
+
+   - Client:
+     ```bash
+     cd client
+     npm install
+     cd ..
+     ```
+
+---
+
+## Environment Variables
+
+You need to configure the following environment variables in a `.env` file in the root of the project.
+
+```bash
+# .env file
+MONGO_URI=your_mongodb_atlas_connection_string
+RPC_URL=https://eth-mainnet.alchemyapi.io/v2/your_alchemy_key
+PORT=5000
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_CHAT_ID=your_telegram_chat_id
+```
+
+- **MONGO_URI**: The connection string to your MongoDB Atlas cluster.
+- **RPC_URL**: The Alchemy API endpoint to interact with the Ethereum network.
+- **PORT**: The port on which your server will run (default: 5000).
+- **TELEGRAM_BOT_TOKEN**: The token for your Telegram bot created via BotFather.
+- **TELEGRAM_CHAT_ID**: Your chat ID or group ID where the notifications will be sent.
+
+---
+
+## Running the Application
+
+1. **Run the MongoDB database** (if you're using a local MongoDB):
+
+   ```bash
+   mongod
+   ```
+
+2. **Start the development server**:
+
+   ```bash
+   npm run dev
+   ```
+
+   This command will start both the backend server (on `localhost:5000`) and the React frontend (on `localhost:3000`) concurrently.
+
+---
+
+## Usage
+
+### Real-Time Deposits
+
+- The web page will display the **two fixed transactions** at the top, followed by the **last 18 real-time transactions**. New transactions will be added to the top of the list, and older ones will be removed to maintain a count of 20 transactions in total.
+
+### Fixed Transactions
+
+- The two fixed transactions are always displayed at the top, as per the example given in the task document.
+
+### Web Page Design
+
+- The page has a **deep blue background** with an **animated gradient flow** for aesthetics.
+- There is a **notification bell icon** (🔔) that, when clicked, displays the last 10 block numbers received.
+![image](https://github.com/user-attachments/assets/fa1f9dcd-ea96-46d0-b8d4-2f815bd6b82a)
+
+---
+
+## Telegram Notification Setup
+
+### Steps to Configure Telegram Notifications
+
+1. **Create a Telegram Bot** using **BotFather**:
+   - Open Telegram and search for `@BotFather`.
+   - Use the `/newbot` command to create a new bot.
+   - Save the **Bot Token** provided by BotFather.
+
+2. **Get Your Telegram Chat ID**:
+   - Start a conversation with your bot, then get your Chat ID by visiting the following URL in your browser:
+     ```
+     https://api.telegram.org/bot<YourBotToken>/getUpdates
+     ```
+   - Look for `"id"` in the response JSON, which will be your **Chat ID**.
+![image](https://github.com/user-attachments/assets/ff9256bb-73bd-4ecd-999d-c86fb11452c8)
+
+3. **Add the Bot Token and Chat ID** to the `.env` file as explained in the [Environment Variables](#environment-variables) section.
+
+---
+
+## Examples
+
+### Web Interface
+
+When you run the application, the web page will show the following:
+
+- **Fixed Transactions**: The top two transactions specified in the document.
+- **Real-Time Transactions**: The latest 18 real-time Ethereum deposit transactions, updating dynamically.
+
+### Telegram Notifications
+
+Example notification sent via Telegram for a new Ethereum deposit:
+
+```
+🚀 New Ethereum Deposit Detected! 🚀
+
+Block Number: 123456
+Transaction Hash: 0x1391be19259f10e01336a383217cf35344dd7aa157e95030f46235448ef5e5d6
+Fee: 0.02 ETH
+Sender Address: 0xabcdef1234567890
+Block Timestamp: 2024-09-09 12:45:32
+```
+
+---
 
